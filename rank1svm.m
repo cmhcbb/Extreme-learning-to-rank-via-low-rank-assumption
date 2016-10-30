@@ -3,7 +3,7 @@ m=100;  % as synthetic data
 C=1;
 d=size(X,1);
 w=rand(d,1);
-for iter=1:100
+for iter=1:200
 iter
 maxtempu=zeros(d,1);
 maxre=0;
@@ -34,9 +34,10 @@ for i=1:m
     %}
 end
 
-eta=1e-4;
+eta=1e-6;
 gradf=w-2*C*maxtempu;
 %eta=Ulinesearch(gradf,U,C,maxre,V,m,X,test);
 w=w-eta*gradf;
 output=0.5*norm(w)+C*maxre*maxre
+rcount=rank1test(w,testset,X,100)
 end

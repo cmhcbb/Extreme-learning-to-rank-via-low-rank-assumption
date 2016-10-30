@@ -1,4 +1,4 @@
-function acc=rank1test(w,testset,X,m)
+function rcount=rank1test(w,testset,X,m)
     rcount=0;
     totalcount=0;
     for i=1:size(testset,1)
