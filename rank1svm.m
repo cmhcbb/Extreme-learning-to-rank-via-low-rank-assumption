@@ -3,15 +3,15 @@ m=100;  % as synthetic data
 C=1;
 d=size(X,1);
 w=rand(d,1);
-for iter=1:30
+for iter=1:100
 iter
 maxtempu=zeros(d,1);
 maxre=0;
 %eta=1e-12;
 for i=1:m
-    i/m;
-    A=rankgenA(i,test,X);
-    pi=X*A;
+    newmat=A{i};
+    %A=rankgenA(i,test,X);
+    pi=X*newmat;
     tempres=w'*pi;
 
     for j=1:size(A,2)      %gradient descent
