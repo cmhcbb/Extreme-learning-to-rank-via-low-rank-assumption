@@ -1,8 +1,8 @@
 %m=max(test(:,1));
-m=500; %for synthesis data
+m=100; %for synthesis data
 C=1;
 d=size(X,1);
-k=3; %k is the rank
+k=5; %k is the rank
 %U=(-1*ones(d,k)+2*randn(d,k))/10;
 %V=(-1*ones(k,m)+2*randn(k,m))/10;
 U=randn(d,k)/10;
@@ -24,9 +24,9 @@ for iter=1:100
 %precompute the (xj-xk)vi'                         //index transfer
 iter
 [rcount,totalcount]=ranktest(U,V,testset,X);
-if (mod(iter,15)==0)
-     eta=eta*2;
-end
+%if (mod(iter,15)==0)
+%     eta=eta*2;
+%end
 rcount
 rcounts(iter)=rcount;
 acc=rcount/totalcount;
@@ -38,7 +38,7 @@ maxtempu=zeros(d,k);
 maxre=0;
 %eta=1e-12;
 %parpool('local',64);
-for i=1:500  %2113
+for i=1:100  %2113
     %if ~any(test(:,1)==i)
     %    continue;
     %endi
@@ -78,7 +78,7 @@ objfuns(iter)=output;
 %    maxre=maxre+max(0,1-trace(U'*re(:,:,i)));
 %    maxtempu=maxtempu+max(0,1-trace(U'*re(:,:,i)))*re(:,:,i);
 %end
-eta=1e-11;
+eta=1e-4;
 gradf=U-2*C*maxtempu;
 %eta=Ulinesearch(gradf,U,C,maxre,V,m,X,test);
 U=U-eta*gradf;
@@ -91,7 +91,7 @@ gradvi=zeros(k,m);
 maxre=0;
 maxtempv=zeros(k,1);
 %parpool('local',64);
-for j=1:500 %2113    % batch size is 50
+for j=1:100 %2113    % batch size is 50
     %if ~any(test(:,1)==j)
     %    continue;
     %end
