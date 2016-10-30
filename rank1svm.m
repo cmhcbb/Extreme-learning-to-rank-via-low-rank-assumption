@@ -34,7 +34,7 @@ for i=1:m
     %}
 end
 
-eta=1e-6;
+eta=1e-4;
 gradf=w-2*C*maxtempu;
 %eta=Ulinesearch(gradf,U,C,maxre,V,m,X,test);
 w=w-eta*gradf;
