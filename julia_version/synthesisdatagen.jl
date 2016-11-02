@@ -21,5 +21,5 @@ function syngentrain(m=100,mo=100,pir=15,d=64,k=5)
     		train=[train;temp]
 	end
 	train=train[2:end,:]
-	return train
+	return train,X
 end

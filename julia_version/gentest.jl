@@ -12,5 +12,5 @@ function genTestset(train,num)
 		end
 	end
 	testset=testset[2:end,:]
-	return testset
+	return testset,partitionindex
 end
