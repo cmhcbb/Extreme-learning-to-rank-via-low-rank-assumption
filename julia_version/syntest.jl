@@ -2,6 +2,7 @@ include("synthesisdatagen.jl")
 include("parindex.jl")
 include("gentest.jl")
 include("ranksvm.jl")
+include("acctest.jl")
 m=100
 d=64
 train,X=syngentrain()

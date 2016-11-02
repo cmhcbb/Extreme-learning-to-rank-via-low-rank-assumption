@@ -11,12 +11,13 @@ function ranksvm(X,train,testset,m,deltax,paridx)
 			loss+=max(0,1-res[i])
 			deltaw+=max(0,1-res[i])*deltax[i]	
 		end
-	eta=1e-6
+	eta=1e-8
 	gradf=w-2*C*deltaw
 	w=w-eta*gradf
 	funv=0.5*norm(w)+C*loss*loss
 	println("Func=",funv)
-	rcount=ranktest(w=w,testset=testset,X=X,flag=0)
+	rcount=ranktest(0,0,w,testset,X,0)
+	println("Rightpair=",rcount)
 	end
 	return w
 end
