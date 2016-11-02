@@ -4,14 +4,17 @@ function ranksvm(X,train,testset,m,deltax,paridx)
 	w=randn(d,1)
 	for iter=1:200
 		loss=0
-		println("Iteration=",iter)
+		println("Iter=",iter)
 		deltaw=zeros(d,1)
-		res=deltax'*w
-		for i=1:size(res,1)
-			loss+=max(0,1-res[i,1])
-			deltaw+=max(0,1-res[i,1])*deltax[:,i]	
+		for k=1:size(deltax,1)
+			deltamatrix=deltax[k]
+			res=deltamatrix'*w
+			for i=1:size(res,1)
+				loss+=max(0,1-res[i,1])
+				deltaw+=max(0,1-res[i,1])*deltamatrix[:,i]	
+			end
 		end
-	eta=1e-5
+	eta=1e-6
 	gradf=w-2*C*deltaw
 	w=w-eta*gradf
 	funv=0.5*norm(w)+C*loss*loss
