@@ -5,7 +5,7 @@ function ranksvm(X,train,testset,m,deltax,paridx)
 	res=deltax'*w
 	loss=0
 	for iter=1:200
-		printf "Iteration %d\n" iter
+		println("Iteration",iter)
 		deltaw=zeros(d,1)
 		for i=1:size(res,1)
 			loss+=max(0,1-res[i])
@@ -15,7 +15,7 @@ function ranksvm(X,train,testset,m,deltax,paridx)
 	gradf=w-2*C*deltaw
 	w=w-eta*gradf
 	funv=0.5*norm(w)+C*loss*loss
-	println("Func=%f" funv)
+	println("Func=%f",funv)
 	rcount=ranktest(w=w,testset=testset,X=X,flag=0)
 	end
 	return w
