@@ -1,8 +1,8 @@
 function ours(X,train,testset,m,deltax,paridx,k=5)
 	C=1
 	d=size(X,1)
-	U=randn(d,k)
-	V=randn(k,m)
+	U=randn(d,k)/10
+	V=randn(k,m)/10
 	for iter=1:200
 		println("Iter=",iter)
 		rcount=ranktest(U,V,0,testset,X,1)
