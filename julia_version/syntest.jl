@@ -30,5 +30,5 @@ for i=1:m        # gen all pairs
 	end
 	deltax[i]=deltax[i][:,2:end]
 end
-w=ranksvm(X,train,testset,m,deltax,paridx)
+#w=ranksvm(X,train,testset,m,deltax,paridx)
 U,V=ours(X,train,testset,m,deltax,paridx)

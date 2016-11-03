@@ -12,16 +12,18 @@ function ours(X,train,testset,m,deltax,paridx,k=5)
 		for i=1:size(deltax,1)
 			deltamatrix=deltax[i]
 			ux=U'*deltamatrix
-			#index= ...
+			index=Int8(train[paridx[i]+1])
+			#println(index)
+			#index=i
 			for j=1:size(deltamatrix,2)
-				temp=V[:,i]'*ux[:,j]
+				temp=V[:,index]'*ux[:,j]
 				loss+=max(0,1-temp[1])
-				deltau+=max(0,1-temp[1])*deltamatrix[:,j]*V[:,i]'	
+				deltau+=max(0,1-temp[1])*deltamatrix[:,j]*V[:,index]'	
 			end
 		end
-		output=vecnorm(U)+vecnorm(V)+C*loss*loss
+		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
 		println("Func=",output)
-		eta=1e-5
+		eta=1e-4  # may lead to divergence
 		gradf=U-2*C*deltau
 		U=U-eta*gradf
 		
@@ -29,14 +31,14 @@ function ours(X,train,testset,m,deltax,paridx,k=5)
 		deltav=zeros(k,1)
 		for j=1:size(deltax,1)
 			deltamatrix=deltax[j]
-			#index=...
+			index=Int8(train[paridx[j]+1])
+			#index=i
 			ux=U'*deltamatrix
 			for i=1:size(deltamatrix,2)
-				temp=V[:,j]'*ux[:,i]
-				loss+=max(0,1-temp[1])
+				temp=V[:,index]'*ux[:,i]
 				deltav+=max(0,1-temp[1])*ux[:,i]
 			end
-		gradvi[:,j]=V[:,j]-2*C*deltav
+		gradvi[:,index]=V[:,index]-2*C*deltav
 		end
 		V=V-eta*gradvi;
 	end
