@@ -2,7 +2,7 @@
 m=100;  % as synthetic data
 C=1;
 d=size(X,1);
-w=rand(d,1);
+w=randn(d,1);
 for iter=1:200
 iter
 maxtempu=zeros(d,1);
