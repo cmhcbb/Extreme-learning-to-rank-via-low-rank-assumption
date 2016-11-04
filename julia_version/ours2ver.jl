@@ -1,16 +1,18 @@
-function ours(X,train,testset,m,deltax,paridx,constidx,subX,dim,k=5)
+function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 	C=1
 	d=size(X,1)
+	srand(12)
 	U=randn(d,k)/10
+	srand(13)
 	V=randn(k,m)/10
-	for iter=1:200
+	for iter=1:10
 		println("Iter=",iter)
 		rcount=ranktest(U,V,0,testset,X,1)
 		println("rcount=",rcount)
 		loss=0
 		deltau=zeros(d,k)
-		for i=1:size(deltax,1)
-			deltamatrix=deltax[i]
+		for i=1:size(deltaxn,1)
+			deltamatrix=deltaxn[i]
 			aindex=reshape(constidx[i]',size(deltamatrix,2),1)
 			temp=zeros(size(deltamatrix,2),1)
 			ux=U'*deltamatrix
@@ -20,17 +22,21 @@ function ours(X,train,testset,m,deltax,paridx,constidx,subX,dim,k=5)
 			for j=1:size(deltamatrix,2)
 				if norm(ux[:,j])==0
 					temp[j]=0
+					#@printf "%d " j
 					continue
 				end
 				intermid=V[:,index]'*ux[:,j]
 				temp[j]=max(0,1-intermid[1])
-				loss+=sum(temp)
-				temp=temp.*aindex
+				tempp=temp.*aindex
 				#deltau+=max(0,1-temp[1])*deltamatrix[:,j]*V[:,index]'	
 			end
-		temp=reshape(temp,dim,dim)
-	        temp=sum(temp,1)
-		deltau=subX[i]*temp'*V[:,index]'	
+			#println(countnz(temp),countnz(tempp))
+			#println(temp)
+			loss+=sum(temp)/2
+			tempp=reshape(tempp,dim,dim)
+	        	#println(tempp)
+			tempp=sum(tempp,1)
+			deltau+=subX[i]*tempp'*V[:,index]'	
 		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
 		println("Func=",output)

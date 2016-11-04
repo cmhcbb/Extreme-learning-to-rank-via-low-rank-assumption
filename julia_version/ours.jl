@@ -1,9 +1,11 @@
 function ours(X,train,testset,m,deltax,paridx,k=5)
 	C=1
 	d=size(X,1)
+	srand(12)
 	U=randn(d,k)/10
+	srand(13)
 	V=randn(k,m)/10
-	for iter=1:200
+	for iter=1:10
 		println("Iter=",iter)
 		rcount=ranktest(U,V,0,testset,X,1)
 		println("rcount=",rcount)
