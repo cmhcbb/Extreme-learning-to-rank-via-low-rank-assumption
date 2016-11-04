@@ -5,7 +5,7 @@ function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 	U=randn(d,k)/10
 	srand(13)
 	V=randn(k,m)/10
-	for iter=1:10
+	for iter=1:100
 		println("Iter=",iter)
 		rcount=ranktest(U,V,0,testset,X,1)
 		println("rcount=",rcount)
@@ -33,6 +33,7 @@ function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 			#println(countnz(temp),countnz(tempp))
 			#println(temp)
 			loss+=sum(temp)/2
+			#@printf "loss=%f " loss 
 			tempp=reshape(tempp,dim,dim)
 	        	#println(tempp)
 			tempp=sum(tempp,1)

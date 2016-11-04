@@ -35,18 +35,19 @@ for i=1:m        # gen all pairs
 			end
 		end
 		index1=j-paridx[i]
-		for l=1:dim
+		for l=paridx[i]+1:paridx[i+1]
+			index2=l-paridx[i]
 			if train[j,3]==train[l,3]
 				deltaxn[i]=hcat(deltaxn[i],zeros(d,1))
-				constidx[i][index1,l]=0
+				constidx[i][index1,index2]=0
 				continue
 			elseif train[j,3]>train[l,3]
 				deltaxn[i]=hcat(deltaxn[i],(X[:,Int8(train[j,2])]-X[:,Int(train[l,2])]))
-				constidx[i][index1,l]=1
+				constidx[i][index1,index2]=1
 			else
 				deltaxn[i]=hcat(deltaxn[i],(X[:,Int8(train[l,2])]-X[:,Int(train[j,2])]))
 
-				constidx[i][index1,l]=-1
+				constidx[i][index1,index2]=-1
 			end
 		end
 	end
@@ -54,5 +55,7 @@ for i=1:m        # gen all pairs
 	deltax[i]=deltax[i][:,2:end]
 end
 #w=ranksvm(X,train,testset,m,deltax,paridx)
-U,V=ours(X,train,testset,m,deltax,paridx)
+	#println(deltaxn[2])
+	#println(deltax[2])
+#U,V=ours(X,train,testset,m,deltax,paridx)
 U,V=ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,15)

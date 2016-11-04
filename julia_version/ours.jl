@@ -5,7 +5,7 @@ function ours(X,train,testset,m,deltax,paridx,k=5)
 	U=randn(d,k)/10
 	srand(13)
 	V=randn(k,m)/10
-	for iter=1:10
+	for iter=1:100
 		println("Iter=",iter)
 		rcount=ranktest(U,V,0,testset,X,1)
 		println("rcount=",rcount)
@@ -25,6 +25,7 @@ function ours(X,train,testset,m,deltax,paridx,k=5)
 				loss+=max(0,1-temp[1])
 				deltau+=max(0,1-temp[1])*deltamatrix[:,j]*V[:,index]'	
 			end
+			#@printf "loss=%f " loss
 		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
 		println("Func=",output)
