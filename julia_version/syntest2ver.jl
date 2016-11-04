@@ -3,23 +3,27 @@ include("parindex.jl")
 include("gentest.jl")
 include("ranksvm.jl")
 include("acctest.jl")
-include("ours.jl")
+include("ours2ver.jl")
 m=100
 d=64
 train,X=syngentrain()
 testset,paridx=genTestset(train,5) # 5 ratings per user
 deltax=Array{Array{Float64,2},1}(m)
 constidx=Array{Array{Float64,2},1}(m)
+subX=Array{Array{Float64,2},1}(m)
 pairidx=[]
 #index=zeros(15,15,m)    # dim not clear
 for i=1:m        # gen all pairs
 	deltax[i]=ones(d,1)
 	dim=paridx[i+1]-paridx[i]
 	constidx[i]=zeros(dim,dim)                 # to get the const index to speedup
+	subpar=train[(paridx[i]+1):(paridx[i+1]),2]
+	subpar=convert(Array{Int64,1},subpar)
+	subX[i]=X[:,subpar]
 	for j=paridx[i]+1:paridx[i+1]
-		for k=j+1:paridx[i+1]
+		for k=paridx[i]+1:paridx[i+1]
 			if train[j,3]==train[k,3]
-				#deltax[i]=hcat(deltax[i],zeros(d,1))
+				deltax[i]=hcat(deltax[i],zeros(d,1))
 				continue
 			elseif train[j,3]>train[k,3]
 				deltax[i]=hcat(deltax[i],(X[:,Int8(train[j,2])]-X[:,Int(train[k,2])]))
@@ -42,4 +46,4 @@ for i=1:m        # gen all pairs
 	deltax[i]=deltax[i][:,2:end]
 end
 #w=ranksvm(X,train,testset,m,deltax,paridx)
-U,V=ours(X,train,testset,m,deltax,paridx)
+U,V=ours(X,train,testset,m,deltax,paridx,constidx,subX,15)
