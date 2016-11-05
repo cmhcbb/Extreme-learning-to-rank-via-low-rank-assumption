@@ -1,0 +1,22 @@
+include("parindex.jl")
+include("gentest.jl")
+include("ranksvm.jl")
+include("acctest.jl")
+include("ours2ver.jl")
+include("pargenpair.jl")
+train=readdlm("user_ratedmovies.dat")
+train=train[:,1:3]
+X=readcsv("ImageF.dat")
+testset,paridx=genTestset(train,5)
+m=size(paridx,1)-1
+d=size(X,1)
+addprocs(20)
+@parallel for i=1:21
+	deltaxn,deltax,constidx,subX=pargenpair(X,paridx,100*(i-1)+1,100*i,100,d)
+	name1="deltax"*string(i)
+	name2="deltaxn"*string(i)
+	name3="constidx"*string(i)
+	writedlm(name1,deltax)
+	writedlm(name2,deltaxn)
+	writedlm(name3,constidx)
+end
