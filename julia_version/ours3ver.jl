@@ -11,33 +11,21 @@ function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 		println("rcount=",rcount)
 		loss=0
 		deltau=zeros(d,k)
-		for i=1:size(deltaxn,1)
-			deltamatrix=deltaxn[i]
-			aindex=reshape(constidx[i]',size(deltamatrix,2),1)
+		for i=1:size(deltax,1)
+			deltamatrix=deltax[i]
+			#aindex=reshape(constidx[i]',size(deltamatrix,2),1)
 			temp=zeros(size(deltamatrix,2),1)
 			ux=U'*deltamatrix
 			index=Int8(train[paridx[i]+1])
 			#println(index)
-			#index=i
-			for j=1:size(deltamatrix,2)
-				if norm(ux[:,j])==0
-					temp[j]=0
-					#@printf "%d " j
-					continue
-				end
-				intermid=V[:,index]'*ux[:,j]
-				temp[j]=max(0,1-intermid[1])
-				#tempp=temp.*aindex
-				#deltau+=max(0,1-temp[1])*deltamatrix[:,j]*V[:,index]'	
-			end
 			#println(countnz(temp),countnz(tempp))
 			#println(temp)
-			tempp=temp.*aindex
+			temp=max(0,1-V[:,index]'*ux)
+			tempp=constidx*sparse(diagm(temp))
 			loss+=sum(temp)/2
 			#@printf "loss=%f " loss 
-			tempp=reshape(tempp,dim,dim)
 	        	#println(tempp)
-			tempp=sum(tempp,1)
+			tempp=sum(tempp,2)
 			deltau+=subX[i]*tempp'*V[:,index]'	
 		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
