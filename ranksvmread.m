@@ -4,7 +4,7 @@
 %X=title';
 %X=abstract';
 load('imagefeature')
-load('matrixA')
+%load('matrixA')
 %read the data
 %test=load('aftertrain.txt');     % user rate matrix train
 test=load('user_ratedmovies.dat');
