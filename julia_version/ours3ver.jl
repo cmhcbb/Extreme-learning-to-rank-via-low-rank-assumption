@@ -41,13 +41,8 @@ function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 			index=Int8(train[paridx[j]+1])
 			#index=i
 			ux=U'*deltamatrix
-			for i=1:size(deltamatrix,2)
-				if norm(ux[:,i])==0
-					continue
-				end
-				temp=V[:,index]'*ux[:,i]
-				deltav+=max(0,1-temp[1])*ux[:,i]
-			end
+			temp=V[:,index]'*ux
+			deltav+=max(0,1-temp[1]).*ux
 		gradvi[:,index]=V[:,index]-2*C*deltav
 		end
 		V=V-eta*gradvi;
