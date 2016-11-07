@@ -36,8 +36,8 @@ function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 			loss+=sum(temp)/2
 			#@printf "loss=%f " loss 
 			tempp=reshape(tempp,dim,dim)
+			tempp=sum(tempp,1)			
 	        	#println(tempp)
-			tempp=sum(tempp,1)
 			deltau+=subX[i]*tempp'*V[:,index]'	
 		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
@@ -45,7 +45,7 @@ function ours2ver(X,train,testset,m,deltax,deltaxn,paridx,constidx,subX,dim,k=5)
 		eta=1e-4  # may lead to divergence
 		gradf=U-2*C*deltau
 		U=U-eta*gradf
-		
+	  	println(U)	
 		gradvi=zeros(k,m)
 		deltav=zeros(k,1)
 		for j=1:size(deltax,1)
