@@ -1,4 +1,4 @@
-function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
+function ours4ver(X,train,testset,m,paridx,A,subX,k=5)
 	C=10
 	d=size(X,1)
 	U=randn(d,k)/10
@@ -37,12 +37,15 @@ function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
 		#if iter%1000==0
 		println("Func=",output)
 		#end
-		eta=1e-16  # may lead to divergence
+		#eta=1e-16  # may lead to divergence
 		gradf=U-2*C*deltau
+		eta=Ulinesearch(U,V,gradf,loss,A,C,m)
+		println(eta)
 		U=U-eta*gradf
 		#println(U)
 		gradvi=zeros(k,m)
 		deltav=zeros(k,1)
+		eta=1e-16
 		for j=1:m
 			deltamatrix=X*A[j]
 			#index=train[paridx[j]+1,1]

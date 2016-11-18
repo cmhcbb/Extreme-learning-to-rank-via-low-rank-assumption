@@ -4,25 +4,29 @@ include("gentest.jl")
 include("ranksvm.jl")
 include("acctest.jl")
 include("synours3ver.jl")
-m=100
 d=64
-train,X=syngentrain()
-testset,paridx=genTestset(train,5) # 5 ratings per user
-deltax=Array{Array{Float64,2},1}(m)
-deltaxn=Array{Array{Float64,2},1}(m)
+X=readcsv("ImageF.dat")
+X=X/67196
+train=readdlm("user_ratedmovies.dat")
+train=train[1:34471,1:3]
+testset,paridx=genTestset(train,25) # 5 ratings per user
+train=testset
+testset,paridx=genTestset(train,5)
+#paridx=parindex(train)
+m=size(paridx,1)-1
 constidx=Array{Array{Float64,2},1}(m)
 subX=Array{Array{Float64,2},1}(m)
 A=Array{Array{Float64,2},1}(m)
-pairidx=[]
 for i=1:m        # gen all pairs
+	println(i)
 	dim=paridx[i+1]-paridx[i]
 	subpar=train[(paridx[i]+1):(paridx[i+1]),2]
 	subpar=convert(Array{Int64,1},subpar)
 	subX[i]=X[:,subpar]
-	A[i]=ones(100,1)
+	A[i]=ones(65133,1)
 	for j=paridx[i]+1:paridx[i+1]
 		for k=j+1:paridx[i+1]
-			tempcol=sparse(zeros(100,1))
+			tempcol=sparse(zeros(65133,1))
 			if train[j,3]==train[k,3]
 				continue
 			elseif train[j,3]>train[k,3]
@@ -37,17 +41,15 @@ for i=1:m        # gen all pairs
 		end
 	end
 		#println(A[i])
-		A[i]=A[i][:,2:end]
-		mat=A[i]
+		A[i]=sparse(A[i][:,2:end])
 		#println(mat)
 		#constidxmat=sparse(zeros(dim,size(mat,2)))
 		#for j=1:dim
 		#	constidxmat[j,:]=mat[Int(train[paridx[i]+j,2]),:]
 		#end
 		#constidx[i]=constidxmat
-		deltax[i]=X*mat
 end
-w=ranksvm(X,train,testset,m,A,paridx)
+#w=ranksvm(X,train,testset,m,A,paridx)
 	#println(deltaxn[2])
 	#println(deltax[2])
 #U,V=ours(X,train,testset,m,deltax,paridx)

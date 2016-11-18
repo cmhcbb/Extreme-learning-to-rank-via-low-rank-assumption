@@ -1,4 +1,4 @@
-function ranktest(U=0,V=0,w=0,testset=0,X=0,flag=1)
+function ranktest(U=0,V=0,w=0,testset=0,X=0,flag=1,m=0)
 	if flag==0
 		para=w
 	else
@@ -17,7 +17,7 @@ function ranktest(U=0,V=0,w=0,testset=0,X=0,flag=1)
 				if real==0
 					continue
 				end
-				res=w'*(X[:,Int8(testset[j,2])]-X[:,Int8(testset[k,2])])
+				res=w'*(X[:,Int(testset[j,2])]-X[:,Int(testset[k,2])])
 				totalcount+=1
 				temp=res*real
 				temp=reshape(temp,1)[1]
@@ -27,5 +27,5 @@ function ranktest(U=0,V=0,w=0,testset=0,X=0,flag=1)
 			end
 		end
 	end		
-	return rcount
+	return rcount,totalcount
 end

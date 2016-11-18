@@ -1,28 +1,26 @@
 function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
-	C=10
+	C=1
 	d=size(X,1)
 	U=randn(d,k)/10
 	V=randn(k,m)/10
 	for iter=1:1000
-		#if iter%1000==0
-			println("Iter=",iter)
-			rcount,totalcount=ranktest(U,V,0,testset,X,1,m)
-			println("rcount=",rcount)
-			println("total=",totalcount)
-		#end
+		println("Iter=",iter)
+		rcount,totalcount=ranktest(U,V,0,testset,X,1,m)
+		println("rcount=",rcount)
 		loss=0
 		deltau=zeros(d,k)
-		for i=1:m
+		for i=1:size(A,1)
+			#deltamatrix=deltax[i]
 			deltamatrix=X*A[i]
+			#constidxmatrix=constidx[i]
 			constidxmatrix=A[i]
 			temp=zeros(size(deltamatrix,2),1)
 			ux=U'*deltamatrix
-			#index=Int8(train[paridx[i]+1])
 			index=i
 			#println(index)
 			#println(countnz(temp),countnz(tempp))
 			#println(temp)
-			temp=max(0,1-V[:,index]'*ux)/size(deltamatrix,2)
+			temp=max(0,1-V[:,index]'*ux)
 			tempp=sparse(constidxmatrix*spdiagm(vec(temp)))
 			loss+=sum(temp)
 			#@printf "loss=%f " loss 
@@ -33,28 +31,24 @@ function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
 			#tempp=tempp[train[paridx[i]+1:paridx[i+1],2],:]
 			#println(size(tempp))
 			deltau+=tempp*V[:,index]'	
-		end 
+		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
-		#if iter%1000==0
 		println("Func=",output)
-		#end
-	     	eta=5e-6  # may lead to divergence
+		eta=1e-3  # may lead to divergence
 		gradf=U-2*C*deltau
 		U=U-eta*gradf
-		#println(U) 
+		#println(U)
 		gradvi=zeros(k,m)
 		deltav=zeros(k,1)
-		eta=5e-6
-		for j=1:m
+		for j=1:size(A,1)
 			deltamatrix=X*A[j]
-			#index=train[paridx[j]+1,1]
-			#index=Int64(index)
 			index=j
+			#index=i
 			ux=U'*deltamatrix
 			deltav+=ux*max(0,1-V[:,index]'*ux)'
 		gradvi[:,index]=V[:,index]-2*C*deltav
 		end
-		V=V-eta*gradvi
+		V=V-eta*gradvi;
 	end
 	return U,V
 end

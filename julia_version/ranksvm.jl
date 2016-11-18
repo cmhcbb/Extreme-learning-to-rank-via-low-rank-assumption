@@ -1,26 +1,30 @@
-function ranksvm(X,train,testset,m,deltax,paridx)
-	C=1
+function ranksvm(X,train,testset,m,A,paridx)
+	C=10
 	d=size(X,1)
-	w=randn(d,1)
-	for iter=1:200
+	w=randn(d,1)/10
+	for iter=1:100
 		loss=0
 		println("Iter=",iter)
 		deltaw=zeros(d,1)
-		for k=1:size(deltax,1)
-			deltamatrix=deltax[k]
+		for k=1:m
+			deltamatrix=X*A[k]
+			constidxmatrix=A[k]
+			temp=zeros(size(deltamatrix,2),1)
 			res=deltamatrix'*w
-			for i=1:size(res,1)
-				loss+=max(0,1-res[i,1])
-				deltaw+=max(0,1-res[i,1])*deltamatrix[:,i]	
-			end
+			temp=max(0,1-res)
+			tempp=sparse(constidxmatrix*spdiagm(vec(temp)))
+			loss+=sum(temp)
+			tempp=sparse(sum(tempp,2))
+			tempp=sparse(X*tempp)
+			deltaw+=tempp	
 		end
-	eta=1e-6
+	eta=5e-4
 	gradf=w-2*C*deltaw
 	w=w-eta*gradf
 	funv=0.5*norm(w)+C*loss*loss
 	println("Func=",funv)
-	rcount=ranktest(0,0,w,testset,X,0)
-	println("Rightpair=",rcount)
+	rcount,totalcount=ranktest(0,0,w,testset,X,0,m)
+	println("Rightpair=",rcount," ",totalcount)
 	end
 	return w
 end
