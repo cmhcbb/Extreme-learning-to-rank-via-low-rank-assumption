@@ -14,6 +14,10 @@ parindex.jl is to the function to get the exact index for each users. For exampl
             so parindex will return [0,2,4]
 ranksvm.jl is the function using ranksvm algorithm.
 
+The program needs to use MAT package. So add the MAT package first which is Pkg.add("MAT")
+
 There are two ways to run a program:
 1. julia [file_name]
-2. julia      
+2. julia 
+   entring into the julia command line.
+   julia>>  include("[filename]")
