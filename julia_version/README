@@ -13,3 +13,7 @@ parindex.jl is to the function to get the exact index for each users. For exampl
             
             so parindex will return [0,2,4]
 ranksvm.jl is the function using ranksvm algorithm.
+
+There are two ways to run a program:
+1. julia [file_name]
+2. julia      
