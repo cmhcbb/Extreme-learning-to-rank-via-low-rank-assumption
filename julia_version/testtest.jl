@@ -52,4 +52,4 @@ end
 	#println(deltaxn[2])
 	#println(deltax[2])
 #U,V=ours(X,train,testset,m,deltax,paridx)
-U,V=ours3ver(X,train,testset,m,paridx,A,subX,5)
+U,V=ours3ver(X,train,train,m,paridx,A,subX,5)
