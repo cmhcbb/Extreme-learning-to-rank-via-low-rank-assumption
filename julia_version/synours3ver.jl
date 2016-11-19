@@ -6,7 +6,7 @@ function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
 	for iter=1:1000
 		println("Iter=",iter)
 		rcount,totalcount=ranktest(U,V,0,testset,X,1,m)
-		println("rcount=",rcount)
+		println("rcount=",rcount," ",totalcount)
 		loss=0
 		deltau=zeros(d,k)
 		for i=1:size(A,1)
@@ -34,7 +34,7 @@ function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
 		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
 		println("Func=",output)
-		eta=1e-3  # may lead to divergence
+		eta=5e-6  # may lead to divergence
 		gradf=U-2*C*deltau
 		U=U-eta*gradf
 		#println(U)
