@@ -21,7 +21,7 @@ function ranktest(U=0,V=0,w=0,testset=0,X=0,flag=1,m=0)
 				totalcount+=1
 				temp=res*real
 				temp=reshape(temp,1)[1]
-				if temp>0
+				if temp>=0
 					rcount+=1
 				end
 			end
