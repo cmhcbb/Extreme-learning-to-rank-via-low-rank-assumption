@@ -1,0 +1,23 @@
+syntest3ver.jl is the main function of the synthetic data.  
+testtest.jl is the main function of using the 5 ratings to do both training and prediction among 100 users.  
+realdata.jl is the main function of using the all pairs among 100 users. And it needs to the A matrix to be in the folder.
+acctest.jl is the function to measure the number of right count and total count.
+gentest.jl is the function to get the testset.
+ours3ver.jl is the alternating gradient descent function for the real data.
+parindex.jl is to the function to get the exact index for each users. For example, 
+            user     movies    rating
+            1         5         2.5
+            1         3         3
+            2         4         3
+            2         10        4
+            
+            so parindex will return [0,2,4]
+ranksvm.jl is the function using ranksvm algorithm.
+
+The program needs to use MAT package. So add the MAT package first which is Pkg.add("MAT")
+
+There are two ways to run a program:
+1. julia [file_name]
+2. julia 
+   entring into the julia command line.
+   julia>>  include("[filename]")
