@@ -15,7 +15,7 @@ testset,paridx=genTestset(train,5) # 5 ratings per user
 m=size(paridx,1)-1
 deltax=Array{Array{Float64,2},1}(m)
 constidx=Array{Array{Float64,2},1}(m)
-subX=Array{Array{Float64,2},1}(m)
+subX=Array{Any,1}(m)
 tempdic=matread("matrixA.mat")
 A=tempdic["A"]
 #=for i=1:m        # gen all pairs
