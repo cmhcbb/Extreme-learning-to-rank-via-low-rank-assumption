@@ -15,4 +15,4 @@ train=testset
 paridx=parindex(train)
 m=size(paridx,1)-1
 constidx=Array{Array{Float64,2},1}(m)
-U,V=ourscho(X,train,train,m,paridx,5)
+U,V=ourscho(X,train,train,m,paridx,1e-3, 5, 10)
