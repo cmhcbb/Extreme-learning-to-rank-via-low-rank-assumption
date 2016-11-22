@@ -1,5 +1,5 @@
 function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
-	C=1
+	C=0.1
 	d=size(X,1)
 	U=randn(d,k)/10
 	V=randn(k,m)/10
@@ -34,7 +34,7 @@ function ours3ver(X,train,testset,m,paridx,A,subX,k=5)
 		end
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss*loss
 		println("Func=",output)
-		eta=5e-6  # may lead to divergence
+		eta=5e-5  # may lead to divergence
 		gradf=U-2*C*deltau
 		U=U-eta*gradf
 		#println(U)

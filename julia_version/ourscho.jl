@@ -56,7 +56,7 @@ function ourscho(X,train,testset,m,paridx,k=5)
 		#println("Wrong = ", wrong)
 		#println("Total = ", total)
 
-		eta=1e-3
+		eta=1e-6
 		gradf=U+2*C*deltau
 		U=U-eta*gradf
 
@@ -95,7 +95,7 @@ function ourscho(X,train,testset,m,paridx,k=5)
 		end
 
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss
-		eta = 1e-3
+		eta = 1e-6
 		V = V-eta*gradvi
 		#println("After updating V, obj = ",output)
 		
