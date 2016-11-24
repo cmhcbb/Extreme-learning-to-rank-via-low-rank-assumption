@@ -1,7 +1,7 @@
 function parindex(train)
 	n=size(train,1)
 	tmp=train[1,1]
-	parindex=[]
+	parindex=Int.([])
 	append!(parindex,0)
 	for i=1:n
 		if tmp!=train[i,1]
@@ -10,6 +10,7 @@ function parindex(train)
 		end
 	end
 	append!(parindex,n)
+	#parindex_int = Int.(parindex)
 	return parindex
 end
 	

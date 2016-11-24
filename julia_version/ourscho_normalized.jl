@@ -21,6 +21,18 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 		end
 	end
 
+	# Number of pairs for each user
+	pair_count = zeros(m)
+	for i=1:m
+		for jj=paridx[i]+1:paridx[i+1]
+			for kk=paridx[i]+1:paridx[i+1]
+				if train[jj, 3] > train[kk, 3]
+					pair_count[i]+=1
+				end
+			end
+		end
+	end
+
 	time_partA = 0.0
 	time_partB=0.0
 
@@ -34,6 +46,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 		loss=0.0
 		newval = zeros(nratings)
 		for i=1:m
+			if pair_count[i]!=0
 				nowv = V[:,i]
 				for jj=paridx[i]+1: paridx[i+1]
 					real_jj = Int(train[jj,2])
@@ -48,7 +61,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 							real_kk = Int(train[kk,2])
 							tmp = 1-(vUX[real_jj]-vUX[real_kk])
 							if ( tmp >= 0 )
-								loss += tmp*tmp
+								loss += tmp*tmp/pair_count[i]
 								tmp_weight[real_jj] -= tmp
 								tmp_weight[real_kk] += tmp
 							end
@@ -58,8 +71,9 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 	
 				for jj=paridx[i]+1:paridx[i+1]
 					real_jj = Int(train[jj,2])
-					newval[jj] = tmp_weight[real_jj]
+					newval[jj] = tmp_weight[real_jj]/pair_count[i]
 				end
+			end
 		end
 
 		AAA=sparse(train[:,2], new_mlist, newval, n, m)
@@ -85,6 +99,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 		train_total=0
 		train_correct=0
 		for i=1:m
+			if pair_count[i] != 0
 				deltav=zeros(k)
 				nowv = V[:,i]
 				for jj=paridx[i]+1: paridx[i+1]
@@ -104,7 +119,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 								train_correct+=1
 							end
 							if ( tmp >= 0 )
-								loss += tmp*tmp
+								loss += tmp*tmp/pair_count[i]
 								tmp_weight[real_jj] -= tmp
 								tmp_weight[real_kk] += tmp
 							end
@@ -116,7 +131,8 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 					deltav += tmp_weight[real_jj]*UX[:, real_jj]
 				end
 				
-				gradvi[:,i] = V[:,i]+2*C*deltav
+				gradvi[:,i] = V[:,i]+2*C*deltav/pair_count[i]
+			end
 		end
 
 		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss
