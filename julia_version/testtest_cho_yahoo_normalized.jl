@@ -11,8 +11,9 @@ vars = matread("title.mat")
 X = (vars["b"])'
 
 train=readdlm("aftertrain.txt")
-trainset,testset,paridx = genTestset(train,10)
+trainset,testset,paridx = genTestset(train,5)
 #testset = readdlm("aftertest.txt")
-paridx = parindex(train);
+paridx = parindex(trainset)
 m=size(paridx,1)-1
-U,V=ourscho(X,train,testset,m,paridx,1e-2, 10, 1)
+
+U,V=ourscho(X,trainset, testset,m,paridx,1e-2, 50, 1)

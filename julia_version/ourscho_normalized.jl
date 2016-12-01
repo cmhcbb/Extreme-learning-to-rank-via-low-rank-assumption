@@ -38,13 +38,15 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 
 	# Faster than UX=U'*X.......
 	UX = (X'*U)'
-	for iter=1:1000
+	for iter=1:2000
 
 		# Update U
 
 		start_time = time_ns()
 		loss=0.0
 		newval = zeros(nratings)
+		aa=0
+		tic()
 		for i=1:m
 			if pair_count[i]!=0
 				nowv = V[:,i]
@@ -57,6 +59,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 				for jj=paridx[i]+1:paridx[i+1]
 					for kk=paridx[i]+1:paridx[i+1]
 						if train[jj, 3] > train[kk, 3]
+							aa+=1
 							real_jj = Int(train[jj,2])
 							real_kk = Int(train[kk,2])
 							tmp = 1-(vUX[real_jj]-vUX[real_kk])
@@ -76,6 +79,8 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 			end
 		end
 
+		println("aa: $(aa)")
+		toc()
 		AAA=sparse(train[:,2], new_mlist, newval, n, m)
 		# Much faster than X*(AAA*V')...... 
 		VV = V'

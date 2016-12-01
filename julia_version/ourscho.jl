@@ -26,7 +26,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 
 	# Faster than UX=U'*X.......
 	UX = (X'*U)'
-	for iter=1:1000
+	for iter=1:2000
 
 		# Update U
 
