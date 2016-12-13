@@ -11,4 +11,4 @@ constidx{i}=constmat;
 deltax{i}=X*mat;
 end
 save('constidx.mat','constidx')
-save('deltax.mat','deltax')
+%save('deltax.mat','deltax')
