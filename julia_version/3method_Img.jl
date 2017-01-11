@@ -11,8 +11,10 @@ include("oneranksvm.jl")
 include("allranksvm.jl")
 include("ranksvmtest.jl")
 
-X=readcsv("ImageF.dat")
-X=X/67196
+#X=readcsv("ImageF.dat")
+#X=X/67196
+vars=matread("genres_feature.mat")
+X=(vars["X"])'
 #train=readdlm("aftertrain.txt")
 train=load("../train_img_filter.jld","train")
 trainset,testset,paridx = genTestset_ratio(train,0.2)

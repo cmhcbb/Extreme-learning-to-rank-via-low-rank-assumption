@@ -10,7 +10,8 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 	vUX = zeros(n)
 	tmp_weight = zeros(n)
 
-	rcount,totalcount=ranktest(U,V,0,testset,X)
+	#rcount,totalcount=ranktest(U,V,0,testset,X)
+	rcount,totalcount=ranktest(U,V,0,train,testset,X)
 	println("Iter 0 Acc ", rcount/totalcount);
 
 	# Used for generating sparse matrix for updating U
@@ -124,7 +125,8 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 
 		time_partB += (time_ns() -start_time)
 
-		rcount,totalcount=ranktest(U,V,0,testset,X,1)
+		#rcount,totalcount=ranktest(U,V,0,testset,X,1)
+		rcount,totalcount=ranktest(U,V,0,train,testset,X,1)
 		println("Iter ", iter, " Test_Accuracy ", rcount/totalcount, " Train_Accuracy ", train_correct/train_total ," Obj ", output, " Time $((time_partA+time_partB)/1e9) TimeU $(time_partA/1e9) TimeV $(time_partB/1e9)")
 		#println("Iter ", iter, " rcount/total ", rcount, "/", totalcount, " train_correct/train_total ", train_correct, "/", train_total ," Obj ", output );
 
