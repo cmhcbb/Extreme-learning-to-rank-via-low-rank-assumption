@@ -18,7 +18,7 @@ function ranksvm(X,train,testset,m,A,paridx)
 			tempp=sparse(X*tempp)
 			deltaw+=tempp	
 		end
-	eta=5e-4
+	eta=1e-6
 	gradf=w-2*C*deltaw
 	w=w-eta*gradf
 	funv=0.5*norm(w)+C*loss*loss

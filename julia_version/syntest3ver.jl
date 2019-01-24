@@ -7,6 +7,7 @@ include("synours3ver.jl")
 m=100
 d=64
 train,X=syngentrain()
+#train,paridx=genTestset(train,20)
 testset,paridx=genTestset(train,5) # 5 ratings per user
 deltax=Array{Array{Float64,2},1}(m)
 deltaxn=Array{Array{Float64,2},1}(m)

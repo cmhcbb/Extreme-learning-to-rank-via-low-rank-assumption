@@ -12,6 +12,7 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 
 	#rcount,totalcount=ranktest(U,V,0,testset,X)
 	rcount,totalcount=ranktest(U,V,0,train,testset,X)
+#	ndcg=rankndcg(U,V,0,m,X,testset,10,0)
 	println("Iter 0 Acc ", rcount/totalcount);
 
 	# Used for generating sparse matrix for updating U
@@ -27,10 +28,10 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 
 	# Faster than UX=U'*X.......
 	UX = (X'*U)'
-	for iter=1:2000
+	for iter=1:1000
 
 		# Update U
-
+#         println(iter);
 		start_time = time_ns()
 		loss=0.0
 		newval = zeros(nratings)
@@ -68,8 +69,8 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 		VV = V'
 		deltau = X*(AAA*VV)
 #		println("loss=",loss)
-		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss
-		println("After updating U, obj = ",output)
+#		output=0.5*vecnorm(U)+0.5*vecnorm(V)+C*loss
+	#	println("After updating U, obj = ",output)
 
 		gradf=U+2*C*deltau
 		U=U-eta*gradf
@@ -126,10 +127,11 @@ function ourscho(X,train,testset,m,paridx,eta=1e-4,k=5,C=10)
 		time_partB += (time_ns() -start_time)
 
 		#rcount,totalcount=ranktest(U,V,0,testset,X,1)
+		if (iter%5==0)
 		rcount,totalcount=ranktest(U,V,0,train,testset,X,1)
-		println("Iter ", iter, " Test_Accuracy ", rcount/totalcount, " Train_Accuracy ", train_correct/train_total ," Obj ", output, " Time $((time_partA+time_partB)/1e9) TimeU $(time_partA/1e9) TimeV $(time_partB/1e9)")
+		println("Iter ", iter, " Test_Accuracy ", rcount/totalcount, " Train_Accuracy ", train_correct/train_total, " Obj ", output, " Time $((time_partA+time_partB)/1e9) TimeU $(time_partA/1e9) TimeV $(time_partB/1e9)")
 		#println("Iter ", iter, " rcount/total ", rcount, "/", totalcount, " train_correct/train_total ", train_correct, "/", train_total ," Obj ", output );
-
+		end
 	end
 	return U,V
 end

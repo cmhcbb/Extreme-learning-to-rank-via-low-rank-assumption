@@ -19,5 +19,5 @@ function genTestset_ratio(train,ratio)
 	end
 	testset=testset[2:end,:]
 	newtrain=newtrain[2:end,:]
-	return newtrain,testset,partitionindex
+	return newtrain,testset
 end

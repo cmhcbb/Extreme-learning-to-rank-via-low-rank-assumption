@@ -4,9 +4,12 @@ function allranksvm(X,train,testset,m,paridx,eta=5e-7,C=10)
 	W=randn(d,m)/10
 	wiX=zeros(n)
 	tmp_weight=zeros(n)
-	rcount,totalcount=ranksvmtest(W,testset,X,1)
+#	ndcg=rankndcg(0,0,W,m,X,testset,5,2)
+	rcount,totalcount=ranksvmtest(W,train,testset,X,1)
 	println("Iter 0 Acc ", rcount/totalcount)
+	time = 0.0
 	for iter=1:2000
+		start_time = time_ns()
 		loss=0.0
 		gradwi=zeros(d,m)
 		train_total=0
@@ -45,8 +48,10 @@ function allranksvm(X,train,testset,m,paridx,eta=5e-7,C=10)
 		end
 	output=0.5*vecnorm(W)+C*loss
 	W=W-eta*gradwi
-	rcount,totalcount=ranksvmtest(W,testset,X,1)
-	println("Iter ", iter, " Test_Accuracy", rcount/totalcount, " Train_Accuracy ", train_correct/train_total, " Output ",output)
+	time += time_ns() - start_time
+#	ndcg=rankndcg(0,0,W,m,X,testset,5,2)
+	rcount,totalcount=ranksvmtest(W,train,testset,X,1)
+	println("Iter ", iter, " Test_Accuracy ", rcount/totalcount, " Train_Accuracy ", train_correct/train_total, " Output ",output," Time $(time/1e9)")
 	end
 	return W
 end

@@ -1,4 +1,4 @@
-function syngentrain(m=100,mo=100,pir=15,d=64,k=5)
+function syngentrain(m=1000,mo=10000,pir=40,d=64,k=20)
 	# m=100 # number of users
 	# C=1  # constant control the loss function
 	# mo=100 # number of movies
@@ -6,7 +6,7 @@ function syngentrain(m=100,mo=100,pir=15,d=64,k=5)
 	srand(49)
 	X=randn(d,mo) # d=64 movies=100
 	# k=5  # rank=5
-	d=size(X,1)
+	#d=size(X,1)
 	srand(50)
 	u=randn(d,k)
 	srand(51)

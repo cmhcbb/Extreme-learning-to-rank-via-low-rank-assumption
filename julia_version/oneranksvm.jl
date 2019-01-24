@@ -3,9 +3,12 @@ function oneranksvm(X,train,testset,m,paridx,eta=5e-7,C=10)
 	n=size(X,2)
 	w=randn(d)/10
 	tmp_weight=zeros(n)
-	rcount,totalcount=ranksvmtest(w,testset,X,0)
-	println("Iter 0 Acc ", rcount/totalcount)
+#	ndcg=rankndcg(0,0,w,m,X,testset,5,1)
+	rcount,totalcount=ranksvmtest(w,train,testset,X,0)
+#	println("Iter 0 Acc ", rcount/totalcount," NDCG ",ndcg)
+	time= 0.0
 	for iter=1:2000
+		start_time = time_ns()
 		loss=0.0
 		train_total=0
 		train_correct=0
@@ -43,8 +46,12 @@ function oneranksvm(X,train,testset,m,paridx,eta=5e-7,C=10)
 		end
 	output=0.5*norm(w)+C*loss
 	w=w-eta*gradw
-	rcount,totalcount=ranksvmtest(w,testset,X,0)
-	println("Iter ",iter," Test_Accuracy ", rcount/totalcount, " Train_Accuracy ", train_correct/train_total, " Output ", output)
+	time+=(time_ns()-start_time)
+#	if iter%100==0
+#	ndcg=rankndcg(0,0,w,m,X,testset,5,1)
+#	end
+	rcount,totalcount=ranksvmtest(w,train,testset,X,0)
+	println("Iter ",iter," Test_Accuracy ", rcount/totalcount, " Train_Accuracy ", train_correct/train_total," Output ", output," Time $(time/1e9)")
 	end
 	return w
 end
